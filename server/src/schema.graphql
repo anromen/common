@@ -1,0 +1,23 @@
+type Query {
+  text: String!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  collections: [Collection!]!
+}
+
+type Collection {
+  id: ID!
+  name: String!
+  notes: [Note!]!
+  user: User!
+}
+
+type Note {
+  id: ID!
+  content: String!
+}
