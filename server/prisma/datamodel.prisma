@@ -1,4 +1,20 @@
 type User {
   id: ID! @id
   name: String!
+  email: String! @unique
+  password: String!
+  collections: [Collection!]!
+}
+
+type Collection {
+  id: ID! @id
+  name: String!
+  user: User!
+  notes: [Note!]!
+}
+
+type Note {
+  id: ID! @id
+  content: String!
+  collection: Collection!
 }

@@ -3,7 +3,15 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateUser {
+/* GraphQL */ `type AggregateCollection {
+  count: Int!
+}
+
+type AggregateNote {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -11,9 +19,238 @@ type BatchPayload {
   count: Long!
 }
 
+type Collection {
+  id: ID!
+  name: String!
+  user: User!
+  notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note!]
+}
+
+type CollectionConnection {
+  pageInfo: PageInfo!
+  edges: [CollectionEdge]!
+  aggregate: AggregateCollection!
+}
+
+input CollectionCreateInput {
+  id: ID
+  name: String!
+  user: UserCreateOneWithoutCollectionsInput!
+  notes: NoteCreateManyWithoutCollectionInput
+}
+
+input CollectionCreateManyWithoutUserInput {
+  create: [CollectionCreateWithoutUserInput!]
+  connect: [CollectionWhereUniqueInput!]
+}
+
+input CollectionCreateOneWithoutNotesInput {
+  create: CollectionCreateWithoutNotesInput
+  connect: CollectionWhereUniqueInput
+}
+
+input CollectionCreateWithoutNotesInput {
+  id: ID
+  name: String!
+  user: UserCreateOneWithoutCollectionsInput!
+}
+
+input CollectionCreateWithoutUserInput {
+  id: ID
+  name: String!
+  notes: NoteCreateManyWithoutCollectionInput
+}
+
+type CollectionEdge {
+  node: Collection!
+  cursor: String!
+}
+
+enum CollectionOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type CollectionPreviousValues {
+  id: ID!
+  name: String!
+}
+
+input CollectionScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [CollectionScalarWhereInput!]
+  OR: [CollectionScalarWhereInput!]
+  NOT: [CollectionScalarWhereInput!]
+}
+
+type CollectionSubscriptionPayload {
+  mutation: MutationType!
+  node: Collection
+  updatedFields: [String!]
+  previousValues: CollectionPreviousValues
+}
+
+input CollectionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CollectionWhereInput
+  AND: [CollectionSubscriptionWhereInput!]
+  OR: [CollectionSubscriptionWhereInput!]
+  NOT: [CollectionSubscriptionWhereInput!]
+}
+
+input CollectionUpdateInput {
+  name: String
+  user: UserUpdateOneRequiredWithoutCollectionsInput
+  notes: NoteUpdateManyWithoutCollectionInput
+}
+
+input CollectionUpdateManyDataInput {
+  name: String
+}
+
+input CollectionUpdateManyMutationInput {
+  name: String
+}
+
+input CollectionUpdateManyWithoutUserInput {
+  create: [CollectionCreateWithoutUserInput!]
+  delete: [CollectionWhereUniqueInput!]
+  connect: [CollectionWhereUniqueInput!]
+  set: [CollectionWhereUniqueInput!]
+  disconnect: [CollectionWhereUniqueInput!]
+  update: [CollectionUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [CollectionUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [CollectionScalarWhereInput!]
+  updateMany: [CollectionUpdateManyWithWhereNestedInput!]
+}
+
+input CollectionUpdateManyWithWhereNestedInput {
+  where: CollectionScalarWhereInput!
+  data: CollectionUpdateManyDataInput!
+}
+
+input CollectionUpdateOneRequiredWithoutNotesInput {
+  create: CollectionCreateWithoutNotesInput
+  update: CollectionUpdateWithoutNotesDataInput
+  upsert: CollectionUpsertWithoutNotesInput
+  connect: CollectionWhereUniqueInput
+}
+
+input CollectionUpdateWithoutNotesDataInput {
+  name: String
+  user: UserUpdateOneRequiredWithoutCollectionsInput
+}
+
+input CollectionUpdateWithoutUserDataInput {
+  name: String
+  notes: NoteUpdateManyWithoutCollectionInput
+}
+
+input CollectionUpdateWithWhereUniqueWithoutUserInput {
+  where: CollectionWhereUniqueInput!
+  data: CollectionUpdateWithoutUserDataInput!
+}
+
+input CollectionUpsertWithoutNotesInput {
+  update: CollectionUpdateWithoutNotesDataInput!
+  create: CollectionCreateWithoutNotesInput!
+}
+
+input CollectionUpsertWithWhereUniqueWithoutUserInput {
+  where: CollectionWhereUniqueInput!
+  update: CollectionUpdateWithoutUserDataInput!
+  create: CollectionCreateWithoutUserInput!
+}
+
+input CollectionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  user: UserWhereInput
+  notes_every: NoteWhereInput
+  notes_some: NoteWhereInput
+  notes_none: NoteWhereInput
+  AND: [CollectionWhereInput!]
+  OR: [CollectionWhereInput!]
+  NOT: [CollectionWhereInput!]
+}
+
+input CollectionWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
+  createCollection(data: CollectionCreateInput!): Collection!
+  updateCollection(data: CollectionUpdateInput!, where: CollectionWhereUniqueInput!): Collection
+  updateManyCollections(data: CollectionUpdateManyMutationInput!, where: CollectionWhereInput): BatchPayload!
+  upsertCollection(where: CollectionWhereUniqueInput!, create: CollectionCreateInput!, update: CollectionUpdateInput!): Collection!
+  deleteCollection(where: CollectionWhereUniqueInput!): Collection
+  deleteManyCollections(where: CollectionWhereInput): BatchPayload!
+  createNote(data: NoteCreateInput!): Note!
+  updateNote(data: NoteUpdateInput!, where: NoteWhereUniqueInput!): Note
+  updateManyNotes(data: NoteUpdateManyMutationInput!, where: NoteWhereInput): BatchPayload!
+  upsertNote(where: NoteWhereUniqueInput!, create: NoteCreateInput!, update: NoteUpdateInput!): Note!
+  deleteNote(where: NoteWhereUniqueInput!): Note
+  deleteManyNotes(where: NoteWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -32,6 +269,187 @@ interface Node {
   id: ID!
 }
 
+type Note {
+  id: ID!
+  content: String!
+  collection: Collection!
+}
+
+type NoteConnection {
+  pageInfo: PageInfo!
+  edges: [NoteEdge]!
+  aggregate: AggregateNote!
+}
+
+input NoteCreateInput {
+  id: ID
+  content: String!
+  collection: CollectionCreateOneWithoutNotesInput!
+}
+
+input NoteCreateManyWithoutCollectionInput {
+  create: [NoteCreateWithoutCollectionInput!]
+  connect: [NoteWhereUniqueInput!]
+}
+
+input NoteCreateWithoutCollectionInput {
+  id: ID
+  content: String!
+}
+
+type NoteEdge {
+  node: Note!
+  cursor: String!
+}
+
+enum NoteOrderByInput {
+  id_ASC
+  id_DESC
+  content_ASC
+  content_DESC
+}
+
+type NotePreviousValues {
+  id: ID!
+  content: String!
+}
+
+input NoteScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  AND: [NoteScalarWhereInput!]
+  OR: [NoteScalarWhereInput!]
+  NOT: [NoteScalarWhereInput!]
+}
+
+type NoteSubscriptionPayload {
+  mutation: MutationType!
+  node: Note
+  updatedFields: [String!]
+  previousValues: NotePreviousValues
+}
+
+input NoteSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: NoteWhereInput
+  AND: [NoteSubscriptionWhereInput!]
+  OR: [NoteSubscriptionWhereInput!]
+  NOT: [NoteSubscriptionWhereInput!]
+}
+
+input NoteUpdateInput {
+  content: String
+  collection: CollectionUpdateOneRequiredWithoutNotesInput
+}
+
+input NoteUpdateManyDataInput {
+  content: String
+}
+
+input NoteUpdateManyMutationInput {
+  content: String
+}
+
+input NoteUpdateManyWithoutCollectionInput {
+  create: [NoteCreateWithoutCollectionInput!]
+  delete: [NoteWhereUniqueInput!]
+  connect: [NoteWhereUniqueInput!]
+  set: [NoteWhereUniqueInput!]
+  disconnect: [NoteWhereUniqueInput!]
+  update: [NoteUpdateWithWhereUniqueWithoutCollectionInput!]
+  upsert: [NoteUpsertWithWhereUniqueWithoutCollectionInput!]
+  deleteMany: [NoteScalarWhereInput!]
+  updateMany: [NoteUpdateManyWithWhereNestedInput!]
+}
+
+input NoteUpdateManyWithWhereNestedInput {
+  where: NoteScalarWhereInput!
+  data: NoteUpdateManyDataInput!
+}
+
+input NoteUpdateWithoutCollectionDataInput {
+  content: String
+}
+
+input NoteUpdateWithWhereUniqueWithoutCollectionInput {
+  where: NoteWhereUniqueInput!
+  data: NoteUpdateWithoutCollectionDataInput!
+}
+
+input NoteUpsertWithWhereUniqueWithoutCollectionInput {
+  where: NoteWhereUniqueInput!
+  update: NoteUpdateWithoutCollectionDataInput!
+  create: NoteCreateWithoutCollectionInput!
+}
+
+input NoteWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  collection: CollectionWhereInput
+  AND: [NoteWhereInput!]
+  OR: [NoteWhereInput!]
+  NOT: [NoteWhereInput!]
+}
+
+input NoteWhereUniqueInput {
+  id: ID
+}
+
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
@@ -40,6 +458,12 @@ type PageInfo {
 }
 
 type Query {
+  collection(where: CollectionWhereUniqueInput!): Collection
+  collections(where: CollectionWhereInput, orderBy: CollectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Collection]!
+  collectionsConnection(where: CollectionWhereInput, orderBy: CollectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CollectionConnection!
+  note(where: NoteWhereUniqueInput!): Note
+  notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note]!
+  notesConnection(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NoteConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -47,12 +471,17 @@ type Query {
 }
 
 type Subscription {
+  collection(where: CollectionSubscriptionWhereInput): CollectionSubscriptionPayload
+  note(where: NoteSubscriptionWhereInput): NoteSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type User {
   id: ID!
   name: String!
+  email: String!
+  password: String!
+  collections(where: CollectionWhereInput, orderBy: CollectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Collection!]
 }
 
 type UserConnection {
@@ -64,6 +493,21 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   name: String!
+  email: String!
+  password: String!
+  collections: CollectionCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutCollectionsInput {
+  create: UserCreateWithoutCollectionsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutCollectionsInput {
+  id: ID
+  name: String!
+  email: String!
+  password: String!
 }
 
 type UserEdge {
@@ -76,11 +520,17 @@ enum UserOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   name: String!
+  email: String!
+  password: String!
 }
 
 type UserSubscriptionPayload {
@@ -103,10 +553,33 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   name: String
+  email: String
+  password: String
+  collections: CollectionUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
+  email: String
+  password: String
+}
+
+input UserUpdateOneRequiredWithoutCollectionsInput {
+  create: UserCreateWithoutCollectionsInput
+  update: UserUpdateWithoutCollectionsDataInput
+  upsert: UserUpsertWithoutCollectionsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutCollectionsDataInput {
+  name: String
+  email: String
+  password: String
+}
+
+input UserUpsertWithoutCollectionsInput {
+  update: UserUpdateWithoutCollectionsDataInput!
+  create: UserCreateWithoutCollectionsInput!
 }
 
 input UserWhereInput {
@@ -138,6 +611,37 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  collections_every: CollectionWhereInput
+  collections_some: CollectionWhereInput
+  collections_none: CollectionWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -145,6 +649,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }
 `
       }
