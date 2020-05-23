@@ -1,26 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import LoginForm from './components/loginForm';
+import Profile from './views/profile';
+
+const App = () => {
+  const [token, setToken] = useState();
+
+  if (!token) return <LoginForm setToken={setToken} />;
+
+  return <Profile setToken={setToken} />;
+};
 
 export default App;

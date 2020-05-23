@@ -1,3 +1,8 @@
-const text = () => 'uuuuhu';
+const currentUser = (_, __, { prisma, userId }) => {
+  if (!userId) throw new Error('No hay un usuario activo.');
+  console.log(userId);
 
-module.exports = { text };
+  return prisma.user({ id: userId });
+};
+
+module.exports = { currentUser };
