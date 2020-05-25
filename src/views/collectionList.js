@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { collectFields } from 'graphql/execution/execute';
 
-const CURRENT_USER = gql`
+const COLLECTIONS = gql`
   query {
-    currentUser {
+    collections {
       name
-      collections {
-        name
-      }
     }
   }
 `;
@@ -26,29 +22,19 @@ const CREATE_COLLECTION = gql`
   }
 `;
 
-const Profile = ({ setToken }) => {
+const CollectionList = () => {
   const [name, setName] = useState('');
 
-  const { loading, error, data, client } = useQuery(CURRENT_USER);
+  const { loading, error, data } = useQuery(COLLECTIONS);
   const [createCollection] = useMutation(CREATE_COLLECTION, {
-    refetchQueries: [{ query: CURRENT_USER }],
     onError: (error) => console.log(error.message),
   });
 
   if (loading) return <h1>...</h1>;
-  if (error) return <h1>Ooops: {error.message}</h1>;
-
-  const logout = () => {
-    setToken(null);
-    localStorage.removeItem('token');
-    client.resetStore();
-  };
+  if (error) return <h1>Oooops: ${error.message}</h1>;
 
   return (
     <div>
-      <h1>{data.currentUser.name}</h1>
-      <button onClick={() => logout()}>Salir</button>
-
       <h2>Colecciones</h2>
       <form
         onSubmit={(e) => {
@@ -66,11 +52,13 @@ const Profile = ({ setToken }) => {
         <button type='submit'>Crear</button>
       </form>
 
-      {data.currentUser.collections.map((collection) => (
-        <p>{collection.name}</p>
+      {data.collections.map((collection) => (
+        <div className='collection' key={collection.id}>
+          <h2>{collection.name}</h2>
+        </div>
       ))}
     </div>
   );
 };
 
-export default Profile;
+export default CollectionList;
